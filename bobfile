@@ -4,6 +4,7 @@ include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-app-g
 version: 3
 packaging: bob-plugin
 enablePreview: false
+release: 17
 dependencies:
   - repository: com.kennycason:kumo-core:1.28
   - project: ../bobthebuildtool
