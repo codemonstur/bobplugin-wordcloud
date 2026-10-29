@@ -36,12 +36,14 @@
         <version.library.bobthebuildtool>12</version.library.bobthebuildtool>
         <version.library.kumo-core>1.28</version.library.kumo-core>
 
-        <version.plugin.check-cves>1.1.0</version.plugin.check-cves>
-        <version.plugin.check-license>1.4.0</version.plugin.check-license>
+        <version.plugin.check-cves>1.2.0</version.plugin.check-cves>
+        <version.plugin.check-license>1.5.0</version.plugin.check-license>
         <version.plugin.codegrade>0.2.0</version.plugin.codegrade>
         <version.plugin.enforcer>3.6.3</version.plugin.enforcer>
         <version.plugin.shade>3.6.2</version.plugin.shade>
-    </properties>
+            <version.library.pitest-junit5>1.2.3</version.library.pitest-junit5>
+        <version.plugin.pitest>1.30.1</version.plugin.pitest>
+</properties>
 
     <dependencies>
 
@@ -155,7 +157,10 @@
                         <configuration>
                             <includeTestDependencies>true</includeTestDependencies>
                             <rules>
+                                <rule>name:regex:.*Apache.*</rule>
+                                <rule>name:regex:.*MIT.*</rule>
                             </rules>
+                        
                         </configuration>
                     </plugin>
 
@@ -183,6 +188,14 @@
                         </executions>
                         <configuration>
                             <includeTestDependencies>true</includeTestDependencies>
+                        <exclusions>
+                            <exclusion>GHSA-65r4-943x-97jj</exclusion>
+                            <exclusion>GHSA-78wr-2p64-hpwj</exclusion>
+                            <exclusion>GHSA-gp7f-rwcx-9369</exclusion>
+                            <exclusion>GHSA-gwrp-pvrq-jmwv</exclusion>
+                            <exclusion>GHSA-j288-q9x7-2f5v</exclusion>
+                            <exclusion>GHSA-m72m-mhq2-9p6c</exclusion>
+                            </exclusions>
                         </configuration>
                     </plugin>
 
@@ -214,6 +227,38 @@
             </build>
         </profile>
 
-    </profiles>
+            <profile>
+            <id>mutation</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>${version.plugin.pitest}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.pitest</groupId>
+                                <artifactId>pitest-junit5-plugin</artifactId>
+                                <version>${version.library.pitest-junit5}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+</profiles>
 
 </project>
