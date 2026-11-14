@@ -25,8 +25,14 @@ import java.util.Map;
 import static bobthebuildtool.services.Functions.isNullOrEmpty;
 import static jcli.CliParserBuilder.newCliParser;
 
+/**
+ * The {@code WordCloudCommand} enum.
+ */
 public enum WordCloudCommand {;
 
+    /**
+     * The {@code DESCRIPTION} constant.
+     */
     public static final String DESCRIPTION = "Generates a wordcloud of the source code";
 
     @CliCommand(name = "wordcloud", description = DESCRIPTION)
@@ -37,6 +43,16 @@ public enum WordCloudCommand {;
         private String outputFileName;
     }
 
+    /**
+     * Runs the operation.
+     *
+     * @param project the project
+     * @param environment the environment
+     * @param args the command-line arguments
+     * @return the result
+     * @throws InvalidCommandLine if the operation fails
+     * @throws IOException if the operation fails
+     */
     public static int run(final Project project, final Map<String, String> environment, final String[] args)
             throws InvalidCommandLine, IOException {
         final Arguments arguments = newCliParser(Arguments::new)
@@ -65,6 +81,12 @@ public enum WordCloudCommand {;
         return map;
     }
 
+    /**
+     * Performs the {@code countWordsInFile} operation.
+     *
+     * @param map the map
+     * @param sourceFile the source file
+     */
     public static void countWordsInFile(final HashMap<String, MutableInteger> map, final Path sourceFile) {
         try {
             final var words = Files.readString(sourceFile).replaceAll("[^0-9a-zA-Z]", " ").split(" ");
